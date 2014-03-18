@@ -13,5 +13,5 @@ if __name__ == '__main__':
     jobRepository   = sys.argv[2]
     job             = sys.argv[3]
 
-    open(jobRepository+'\\'+jobName,'w').write(job)
+    open(jobRepository+'/'+jobName,'w').write(job)
 
