@@ -2,6 +2,7 @@
 
 
 import os
+import os.path
 import sys
 import glob
 import time
@@ -18,7 +19,11 @@ POLL_PERIOD     = 1.0
 
 def Engine(myName, jobRepository, jobFilter):
     """
-    The Job Engine.
+    The Job Engine. The correctness of this mechanism with regards to running multiple engines
+    is based on the mv/rename syscall(s) avoiding a race condition.
+    On some filesystems, a mv/rename is atomic (single syscall), on others it isn't but this
+    mechanism should handle all cases due to the fact that in no case will you end up with
+    a duplicated file with two simultaneous renames.
     """
 
     #
@@ -27,9 +32,9 @@ def Engine(myName, jobRepository, jobFilter):
     while True:
 
         #
-        # Get a list of all files in the job directory matching the filter.
+        # Get a list of all files in the job directory matching the filter and sorted by modification time.
         #
-        jobList = glob.glob(jobRepository+'/'+jobFilter)
+        jobList = sorted(glob.glob(os.path.join(jobRepository, jobFilter)), key=os.path.getmtime)
         if jobList != [] :
 
             #

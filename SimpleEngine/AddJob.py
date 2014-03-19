@@ -3,6 +3,7 @@
 
 
 import sys
+import os.path
 
 
 if __name__ == '__main__':
@@ -21,5 +22,5 @@ if __name__ == '__main__':
     #
     # write the job to the file in the job queue directory.
     #
-    open(jobRepository+'/'+jobName,'w').write(job)
+    open(os.path.join(jobRepository,jobName),'w').write(job)
 
